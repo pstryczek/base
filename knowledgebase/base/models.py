@@ -13,8 +13,8 @@ class PublishedManager(models.Manager):
 
 class Post(models.Model):
     STATUS_CHOICES = (
-        ('draft', 'Roboczy'),
-        ('published', 'Opublikowany'),
+        ('draft', 'Draft'),
+        ('published', 'Published'),
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
@@ -28,9 +28,8 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               default='draft')
-    objects = models.Manager() # Menedżer domyślny.
-    published = PublishedManager() # Menedżer niestandardowy.
-    # Obsługa tagów.
+    objects = models.Manager() 
+    published = PublishedManager()
     tags = TaggableManager()
 
     class Meta:
@@ -56,8 +55,9 @@ class Comment(models.Model):
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
 
+
     class Meta:
         ordering = ('created',)
 
     def __str__(self):
-        return 'Komentarz dodany przez {} dla posta {}'.format(self.name, self.post)
+        return 'Comment added by {} to post: {}'.format(self.name, self.post)
